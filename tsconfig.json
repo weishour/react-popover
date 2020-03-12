@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "target": "esnext",
+    "noEmit": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

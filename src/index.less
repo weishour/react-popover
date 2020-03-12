@@ -1,0 +1,107 @@
+@dark-color: #303030;
+@light-color: #ffffff;
+
+.app-popover {
+  position: absolute;
+  z-index: 10;
+  border-radius: 4px;
+  box-sizing: border-box;
+  > * {
+    box-sizing: border-box;
+  }
+
+  &-arrow {
+    background-color: transparent;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px;
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+  &-content {
+    color: #333;
+    background-color: @light-color;
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    z-index: 9;
+    min-width: 30px;
+    min-height: 28px;
+    padding: 6px 8px;
+  }
+
+  &-wrapper-enter {
+    opacity: 0;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transition: all 200ms;
+  }
+
+  &-wrapper-exit {
+    opacity: 1;
+  }
+
+  &-wrapper-exit-active {
+    opacity: 0.01;
+    transition: all 200ms;
+  }
+}
+
+.app-popover {
+  &.dark &-content {
+    color: #ffffff;
+    background-color: fade(@dark-color, 90%);
+  }
+
+  &.right &-arrow {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: @light-color;
+    border-left-color: @light-color;
+    box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
+  }
+  &.dark.right &-arrow {
+    border-bottom-color: fade(@dark-color, 90%);
+    border-left-color: fade(@dark-color, 90%);
+  }
+
+  &.top &-arrow {
+    border-top-color: transparent;
+    border-right-color: @light-color;
+    border-bottom-color: @light-color;
+    border-left-color: transparent;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07);
+  }
+  &.dark.top &-arrow {
+    border-right-color: fade(@dark-color, 90%);
+    border-bottom-color: fade(@dark-color, 90%);
+  }
+
+  &.left &-arrow {
+    border-top-color: @light-color;
+    border-right-color: @light-color;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
+  }
+  &.dark.left &-arrow {
+    border-top-color: fade(@dark-color, 90%);
+    border-right-color: fade(@dark-color, 90%);
+  }
+
+  &.bottom &-arrow {
+    border-top-color: @light-color;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: @light-color;
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.06);
+  }
+  &.dark.bottom &-arrow {
+    border-top-color: fade(@dark-color, 90%);
+    border-left-color: fade(@dark-color, 90%);
+  }
+}
