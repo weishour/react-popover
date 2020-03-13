@@ -1,8 +1,17 @@
-import React, { cloneElement, CSSProperties, useState, FC, useRef, useEffect, forwardRef, useCallback, isValidElement } from 'react'
+import React, {
+  cloneElement,
+  CSSProperties,
+  useState,
+  FC,
+  useRef,
+  useEffect,
+  forwardRef,
+  useCallback
+} from 'react'
 import { CSSTransition } from 'react-transition-group'
 import ReactDOM from 'react-dom'
-import useClickOutside from './useClickOutside'
 import { useGetStyle, Position } from './useGetStyle'
+import useClickOutside from './useClickOutside'
 
 type PopoverComponentProps = {
   content: string | JSX.Element
@@ -57,10 +66,9 @@ const PopoverElement = forwardRef<HTMLDivElement, PopoverElementProps>((props, r
 })
 
 const ReactPopover: FC<PopoverComponentProps> = ({ content, children, trigger, position, theme }) => {
-  if (!isValidElement(children)) {
-    console.error('Popover children is empty or not a vaild element!')
-    return null
-  }
+  if (!children) return null
+  // console.error()
+  
   const wrapperRef = useRef<HTMLElement>()
   const [visible, setVisible] = useState(false)
   const childRef = useRef<HTMLElement>(null)
@@ -76,7 +84,6 @@ const ReactPopover: FC<PopoverComponentProps> = ({ content, children, trigger, p
       wrapperRef.current = createWrapper()
     }
   }
-
 
   useClickOutside(() => {
     setVisible(false)

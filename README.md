@@ -38,7 +38,7 @@ Prop              | Type       | Required | Default     | Description
 theme             | string     | false    | light       | color theme. one of ['light', 'dark']
 trigger           | string     | false    | hover       | trigger popover method. one of ['hover', 'click']
 position          | string     | false    | bottomLeft  | how position the popover. one of ['topLeft', 'top', 'topRight', 'rightTop', 'right', 'rightBottom', 'bottomRight', 'bottom', 'bottomLeft', 'leftBottom', 'left', 'leftTop']
-conetent          | ReactNode  | true     |             | popover content
+content           | ReactNode  | true     |             | popover content
 children          | ReactNode  | true     |             | popover reference
 
 

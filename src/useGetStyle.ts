@@ -1,112 +1,154 @@
 import { useState, useEffect } from 'react'
 
-export type Position =
-  | 'topLeft'
-  | 'top'
-  | 'topRight'
-  | 'rightTop'
-  | 'right'
-  | 'rightBottom'
-  | 'bottomRight'
-  | 'bottom'
-  | 'bottomLeft'
-  | 'leftBottom'
-  | 'left'
-  | 'leftTop'
+const positionObj = {
+  TOPLEFT: 'topLeft',
+  TOP: 'top',
+  TOPRIGHT: 'topRight',
+  RIGHTTOP: 'rightTop',
+  RIGHT: 'right',
+  RIGHTBOTTOM: 'rightBottom',
+  BOTTOMRIGHT: 'bottomRight',
+  BOTTOM: 'bottom',
+  BOTTOMLEFT: 'bottomLeft',
+  LEFTBOTTOM: 'leftBottom',
+  LEFT: 'left',
+  LEFTTOP: 'leftTop'
+} as const
+
+export type Position = typeof positionObj[keyof typeof positionObj]
+
+const validPosition = (position: Position) => Object.values(positionObj).some(p => p === position)
 
 type Style = {
-  top?: number
-  right?: number
-  bottom?: number
-  left?: number
-  paddingTop?: number
-  paddingRight?: number
-  paddingBottom?: number
-  paddingLeft?: number
+  top?: number | string
+  right?: number | string
+  bottom?: number | string
+  left?: number | string
+  transform?: string
 }
 
 const arrowWidth = 12
 
 const arrowHeight = 12
 
-export const useGetStyle = (children: HTMLElement, popover: HTMLElement, positon: Position) => {
+export const useGetStyle = (children: HTMLElement, popover: HTMLElement, position: Position) => {
   const [popoverStyle, setPopoverStyle] = useState<Style>({})
   const [arrowStyle, setArrowStyle] = useState<Style>({})
   const [popoverClass, setPopoverClass] = useState<string>()
 
+  const mergePopoverStyle = (style: Style) => {
+    setPopoverStyle(s => ({ ...s, ...style }))
+  }
+
+  const mergePopoverClass = (classname: string) => {
+    setPopoverClass(c => (c ? `${c} ${classname}` : classname))
+  }
+
+  if (!validPosition(position)) {
+    position = 'bottomLeft'
+  }
+
+  // if (!validPosition(position)) {
+  //   position = 'bottomLeft'
+  //   console.error(`
+  //     postion not a valid value, it shound be one of
+  //     ("topLeft" | "top" | "topRight" | "rightTop" | "right" | "rightBottom" |
+  //     "bottomRight" | "bottom" | "bottomLeft" | "leftBottom" | "left" | "leftTop")
+  //   `)
+  // }
+
   useEffect(() => {
+    // Correct popover position needs children's position and itself's width or height to render.
     if (!children || !popover) return
     const childrenRect = children.getBoundingClientRect()
     const popoverRect = popover.getBoundingClientRect()
     const { top: childrenTop, left: childrenLeft, width: childrenWidth, height: childrenHeight } = childrenRect
     const { width: popoverWidth, height: popoverHeight } = popoverRect
-    const topTop = childrenTop - popoverHeight - arrowHeight
-    const rightLeft = childrenLeft + childrenWidth
-    const bottomTop = childrenTop + popoverHeight
-    const leftLeft = childrenLeft - popoverWidth - arrowWidth
-    switch (positon) {
-      case 'topLeft':
-        setPopoverStyle({ top: topTop, left: childrenLeft, paddingBottom: 10 })
-        setArrowStyle({ left: childrenWidth / 2 - arrowWidth / 2, bottom: arrowHeight / 2 })
-        setPopoverClass('top')
+
+    const isTop = position.toLowerCase().indexOf(positionObj.TOP) === 0
+    const isRight = position.toLowerCase().indexOf(positionObj.RIGHT) === 0
+    const isBottom = position.toLowerCase().indexOf(positionObj.BOTTOM) === 0
+    const isLeft = position.toLowerCase().indexOf(positionObj.LEFT) === 0
+
+    if (isTop) {
+      mergePopoverStyle({ top: childrenTop - popoverHeight - arrowHeight })
+      // Every arrow that has different direct has different style, add a class to distinguish them
+      mergePopoverClass(positionObj.TOP)
+    }
+    if (isRight) {
+      mergePopoverStyle({ left: childrenLeft + childrenWidth + arrowWidth })
+      mergePopoverClass(positionObj.RIGHT)
+    }
+    if (isBottom) {
+      mergePopoverStyle({ top: childrenTop + popoverHeight + arrowHeight })
+      mergePopoverClass(positionObj.BOTTOM)
+    }
+    if (isLeft) {
+      mergePopoverStyle({ left: childrenLeft - popoverWidth - arrowWidth })
+      mergePopoverClass(positionObj.LEFT)
+    }
+
+    switch (position) {
+      case positionObj.TOPLEFT:
+        mergePopoverStyle({ left: childrenLeft })
+        // side arrow postion need to calculate
+        setArrowStyle({ left: childrenWidth / 2 - 12 })
         break
-      case 'top':
-        setPopoverStyle({ top: topTop, left: childrenLeft + childrenWidth / 2 - popoverWidth / 2, paddingBottom: 10 })
-        setArrowStyle({ right: popoverWidth / 2 - arrowWidth / 2, bottom: arrowHeight / 2 })
-        setPopoverClass('top')
+      case positionObj.TOP:
+        mergePopoverStyle({ left: childrenLeft + childrenWidth / 2 - popoverWidth / 2 })
+        // The center arrow is unnecessary to calculate so position style has set be in css file.
+        // Add an extra class named `center` to popover to render center arrow
+        mergePopoverClass('center')
         break
-      case 'topRight':
-        setPopoverStyle({ top: topTop, left: childrenLeft + childrenWidth - popoverWidth, paddingBottom: 10 })
-        setArrowStyle({ right: childrenWidth / 2 - arrowWidth / 2, bottom: arrowHeight / 2 })
-        setPopoverClass('top')
+      case positionObj.TOPRIGHT:
+        mergePopoverStyle({ left: childrenLeft + childrenWidth - popoverWidth })
+        setArrowStyle({ right: childrenWidth / 2 - 12 })
         break
-      case 'rightTop':
-        setPopoverStyle({ left: rightLeft, top: childrenTop, paddingLeft: 10 })
-        setArrowStyle({ top: childrenHeight / 2 - arrowHeight / 2, left: arrowWidth / 2 })
-        setPopoverClass('right')
+      case positionObj.RIGHTTOP:
+        mergePopoverStyle({ top: childrenTop })
+        setArrowStyle({ top: childrenHeight / 2 - 8 })
         break
-      case 'right':
-        setPopoverStyle({ left: rightLeft, top: childrenTop + childrenHeight / 2 - popoverHeight / 2, paddingLeft: 10 })
-        setArrowStyle({ top: popoverHeight / 2 - arrowHeight / 2, left: arrowWidth / 2 })
-        setPopoverClass('right')
+      case positionObj.RIGHT:
+        mergePopoverStyle({ top: childrenTop + childrenHeight / 2 - popoverHeight / 2 })
+        mergePopoverClass('center')
         break
-      case 'rightBottom':
-        setPopoverStyle({ left: rightLeft, top: childrenTop + childrenHeight - popoverHeight, paddingLeft: 10 })
-        setArrowStyle({ bottom: childrenHeight / 2 - arrowHeight / 2, left: arrowWidth / 2 })
-        setPopoverClass('right')
+      case positionObj.RIGHTBOTTOM:
+        mergePopoverStyle({ top: childrenTop + childrenHeight - popoverHeight })
+        setArrowStyle({ bottom: childrenHeight / 2 - 8 })
         break
-      case 'bottomRight':
-        setPopoverStyle({ top: bottomTop, left: childrenLeft + childrenWidth - popoverWidth, paddingTop: 10 })
-        setArrowStyle({ right: childrenWidth / 2 - arrowWidth / 2, top: arrowHeight / 2 })
-        setPopoverClass('bottom')
+      case positionObj.BOTTOMRIGHT:
+        mergePopoverStyle({ left: childrenLeft + childrenWidth - popoverWidth })
+        setArrowStyle({ right: childrenWidth / 2 - 8 })
         break
-      case 'bottom':
-        setPopoverStyle({ top: bottomTop, left: childrenLeft + childrenWidth / 2 - popoverWidth / 2, paddingTop: 10 })
-        setArrowStyle({ right: popoverWidth / 2 - arrowWidth / 2, top: arrowHeight / 2 })
-        setPopoverClass('bottom')
+      case positionObj.BOTTOM:
+        mergePopoverStyle({ left: childrenLeft + childrenWidth / 2 - popoverWidth / 2 })
+        mergePopoverClass('center')
         break
-      case 'bottomLeft':
-        setPopoverStyle({ top: bottomTop, left: childrenLeft, paddingTop: 10 })
-        setArrowStyle({ left: childrenWidth / 2 - arrowWidth / 2, top: arrowHeight / 2 })
-        setPopoverClass('bottom')
+      case positionObj.BOTTOMLEFT:
+        mergePopoverStyle({ left: childrenLeft })
+        setArrowStyle({ left: childrenWidth / 2 - 8 })
         break
-      case 'leftBottom':
-        setPopoverStyle({ left: leftLeft, top: childrenTop + childrenHeight - popoverHeight, paddingRight: 10 })
-        setArrowStyle({ bottom: childrenHeight / 2 - arrowHeight / 2, right: arrowWidth / 2 })
-        setPopoverClass('left')
+      case positionObj.LEFTBOTTOM:
+        mergePopoverStyle({ top: childrenTop + childrenHeight - popoverHeight })
+        setArrowStyle({ bottom: childrenHeight / 2 - 8 })
         break
-      case 'left':
-        setPopoverStyle({ left: leftLeft, top: childrenTop + childrenHeight / 2 - popoverHeight / 2, paddingRight: 10 })
-        setArrowStyle({ top: popoverHeight / 2 - arrowHeight / 2, right: arrowWidth / 2 })
-        setPopoverClass('left')
+      case positionObj.LEFT:
+        mergePopoverStyle({ top: childrenTop + childrenHeight / 2 - popoverHeight / 2 })
+        mergePopoverClass(' center')
         break
-      case 'leftTop':
-        setPopoverStyle({ left: leftLeft, top: childrenTop, paddingRight: 10 })
-        setArrowStyle({ top: childrenHeight / 2 - arrowHeight / 2, right: arrowWidth / 2 })
-        setPopoverClass('left')
+      case positionObj.LEFTTOP:
+        mergePopoverStyle({ top: childrenTop })
+        setArrowStyle({ top: childrenHeight / 2 - 8 })
         break
     }
-  }, [children, popover, positon])
+  }, [children, popover, position])
 
   return { popoverStyle, arrowStyle, popoverClass }
 }
+
+const a = {
+  a: 1,
+  b: '2'
+}
+
+type A = typeof a[keyof typeof a]
