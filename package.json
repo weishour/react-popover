@@ -1,10 +1,12 @@
 {
   "name": "@winme/react-popover",
-  "version": "1.0.0",
-  "description": "A tooltip component with react.",
-  "main": "src/index.tsx",
+  "version": "1.0.6",
+  "description": "A popover component with react.",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --progress --color",
+    "dev": "NODE_ENV=development webpack-dev-server",
+    "build": "rm -r build & webpack --progress --color",
+    "prepublishOnly": "node prepublish.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +24,16 @@
   "bugs": {
     "url": "https://github.com/WinmezzZ/react-popover/issues"
   },
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "browserslist": [
+    "last 2 versions",
+    "ie >= 11",
+    "Edge >= 15",
+    "> 1%"
+  ],
   "peerDependencies": {
     "react": ">=16.13.0",
     "react-dom": ">=16.13.0"
@@ -51,6 +63,7 @@
     "style-loader": "^1.1.3",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   }
 }

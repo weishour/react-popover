@@ -3,14 +3,12 @@ import { CSSTransition } from 'react-transition-group'
 import ReactDOM from 'react-dom'
 import useClickOutside from './useClickOutside'
 import { useGetStyle, Position } from './useGetStyle'
-import './index.less'
 
 type PopoverComponentProps = {
   content: string | JSX.Element
   children: JSX.Element
   trigger?: 'hover' | 'click'
   position?: Position
-  style?: CSSProperties
   theme?: 'dark' | 'light'
 }
 
@@ -58,7 +56,7 @@ const PopoverElement = forwardRef<HTMLDivElement, PopoverElementProps>((props, r
   )
 })
 
-const Popover: FC<PopoverComponentProps> = ({ content, children, trigger, position, theme }) => {
+const ReactPopover: FC<PopoverComponentProps> = ({ content, children, trigger, position, theme }) => {
   const wrapperRef = useRef<HTMLElement>()
   const [visible, setVisible] = useState(false)
   const childRef = useRef<HTMLElement>(null)
@@ -120,10 +118,10 @@ const Popover: FC<PopoverComponentProps> = ({ content, children, trigger, positi
   )
 }
 
-Popover.defaultProps = {
+ReactPopover.defaultProps = {
   trigger: 'hover',
   position: 'bottomLeft',
   theme: 'light'
 }
 
-export default Popover
+export default ReactPopover

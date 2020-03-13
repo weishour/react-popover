@@ -2,11 +2,11 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: ['./src/index.tsx'],
   output: {
     path: path.resolve(__dirname, './build'),
-    filename: '[name].[hash].js'
+    filename: 'index.js',
   },
   module: {
     rules: [
@@ -59,7 +59,20 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js']
   },
   externals: {
-    react: 'react',
-    'react-dom': 'react-dom'
-	}
+  // 'react': {
+  //   'commonjs': 'react',
+  //   'commonjs2': 'react',
+  //   'amd': 'react',
+  //   'root': 'React'
+  //   },
+  //   'react-dom': {
+  //     'commonjs': 'react-dom',
+  //     'commonjs2': 'react-dom',
+  //     'amd': 'react-dom',
+  //     'root': 'ReactDOM'
+  //   }
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'demo')
+  }
 }
