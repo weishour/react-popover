@@ -1,10 +1,6 @@
 src 
-demo
-build
 tsconfig.json 
-tslint.json 
 .prettierrc
-webpack.config.js
 .gitignore
 prepublish.js
 yarn.lock
