@@ -1,9 +1,9 @@
 # react-popover
-A `<Popover>` component for react. [http://popover.winmee.cn](http://popover.winmee.cn)
+一个 `<Popover>` 的React组件. [http://popover.winmee.cn](http://popover.winmee.cn)
 
-English | [简体中文](README-zh_CN.md)
+[English](README.md) | 简体中文
 
-### Features
+### 特性
 - **React Hooks**: ✅
 - **TypeScript** ✅
 - **Server Render** ✅
@@ -11,14 +11,14 @@ English | [简体中文](README-zh_CN.md)
 - **Theme**: ✅
 - **Configurable**: ✅
 
-### Install
+### 安装
 
 ```bash
 $ yarn add @winme/react-popover
 ```
 
 
-### Usage
+### 使用
 
 ```jsx
 import Popover from '@winme/react-popover'
@@ -33,7 +33,7 @@ export default function App() {
 }
 ```
 
-### Props
+### 属性
 
 Prop              | Type       | Required | Default     | Description
 ----------------- | --------   | -------- | ----------- | -----------
@@ -44,14 +44,14 @@ content           | ReactNode  | true     |             | popover content
 children          | ReactNode  | true     |             | popover reference
 
 
-### Contributing
+### 贡献
 
-We very much welcome your contribution, you can build together with us in the following ways 😃
+我们非常欢迎您的贡献，您可以通过以下方式与我们共同建设 😃
 
-- Use Ant Design Pro in your daily work.
-- Submit [GitHub issues](https://github.com/WinmezzZ/react-popover/issues) to report bugs or ask questions.
-- Propose [Pull Request](https://github.com/WinmezzZ/react-popover/pulls) to improve our code.
+- 在日常工作中使用Ant Design Pro.
+- 提交 [GitHub issues](https://github.com/WinmezzZ/react-popover/issues) 来报告bug或提问.
+- 建议 [Pull Request](https://github.com/WinmezzZ/react-popover/pulls) 来改进我们的代码.
 
-### License
+### 许可证
 
 `react-popover` is released under the MIT license.
